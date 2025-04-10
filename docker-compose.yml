@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # API Gateway
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "3000:3000"
+    depends_on:
+      - user-service
+      - product-service
+      - cart-service
+      - order-service
+      - payment-service
+      - notification-service
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb+srv://artemmorzh:artemmorzh@cluster1.8uyw36d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1
+
+  # User Service
+  user-service:
+    build: ./services/user-service
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb+srv://artemmorzh:artemmorzh@cluster1.8uyw36d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1
+      - JWT_SECRET=your_jwt_secret_key
+
+  # Product Service
+  product-service:
+    build: ./services/product-service
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb+srv://artemmorzh:artemmorzh@cluster1.8uyw36d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1
+
+  # Cart Service
+  cart-service:
+    build: ./services/cart-service
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb+srv://artemmorzh:artemmorzh@cluster1.8uyw36d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1
+
+  # Order Service
+  order-service:
+    build: ./services/order-service
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb+srv://artemmorzh:artemmorzh@cluster1.8uyw36d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1
+
+  # Payment Service
+  payment-service:
+    build: ./services/payment-service
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb+srv://artemmorzh:artemmorzh@cluster1.8uyw36d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1
+      - STRIPE_SECRET_KEY=your_stripe_secret_key
+
+  # Notification Service
+  notification-service:
+    build: ./services/notification-service
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb+srv://artemmorzh:artemmorzh@cluster1.8uyw36d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1
+      - SENDGRID_API_KEY=your_sendgrid_api_key
+      - TWILIO_ACCOUNT_SID=your_twilio_sid
+      - TWILIO_AUTH_TOKEN=your_twilio_token
+
+  # Frontend
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:3000 
